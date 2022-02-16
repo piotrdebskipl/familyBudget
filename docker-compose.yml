@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: family-budget-backend
+    command: npm start
+    volumes:
+      - ./backend/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "8086:8086"
+    depends_on:
+      - database
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - family-budget-network-app
+  frontend:
+    build:
+      context: ./frontend
+    container_name: family-budget-frontend
+    command: npm start
+    volumes:
+      - ./frontend/:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - backend
+    ports:
+      - "3006:3000"
+    networks:
+      - family-budget-network-app
+  database:
+    image: mongo
+    volumes:
+      - data-volume:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - family-budget-network-app
+
+networks:
+  family-budget-network-app:
+    driver: bridge
+
+volumes:
+  data-volume:
+  # node_modules:
+  # web-root:
+  #   driver: local
