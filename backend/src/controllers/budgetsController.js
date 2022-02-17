@@ -6,7 +6,7 @@ export const createBudget = async (req, res, next) => {
         // validateUserId(req)
         // validateName(req)
 
-        const { userId } = req.params
+        const { userId } = req.user
         const { name } = req.body
         const budget = await Budget.create({ name, createdBy: userId })
 
@@ -20,7 +20,7 @@ export const getAllBudgets = async (req, res, next) => {
     try {
         // validateUserId(req)
 
-        const { userId } = req.params
+        const { userId } = req.user
         const userBudgets = await Budget.find({ createdBy: userId })
         const sharedBudgets = await Budget.find({ shared: userId })
         const budgets = [...userBudgets, ...sharedBudgets]
@@ -37,7 +37,8 @@ export const getBudgetById = async (req, res, next) => {
         // validateUserId(req)
         // validateBudgetId(req)
         
-        const { userId, budgetId } = req.params
+        const { userId } = req.user
+        const { budgetId } = req.params
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
 
         res.status(200).json(budget)
@@ -51,7 +52,8 @@ export const updateBudgetById = async (req, res, next) => {
         // validateUserId(req)
         // validateBudgetId(req)
         
-        const { userId, budgetId } = req.params
+        const { userId } = req.user
+        const { budgetId } = req.params
         const { name, shared, incomes, outcomes } = req.body
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
 

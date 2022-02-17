@@ -11,7 +11,8 @@ export const createIncome = async (req, res, next) => {
         // validateName(req)
         // validateValue(req)
 
-        const { userId, budgetId } = req.params
+        const { userId } = req.user
+        const { budgetId } = req.params
         const { name, value, categoryId } = req.body
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
         const income = await Income.create({ name, value, budget: budget.id })
@@ -34,7 +35,8 @@ export const getAllIncomes = async (req, res, next) => {
         // validateUserId(req)
         // validateUserId(req)
 
-        const { userId, budgetId } = req.params
+        const { userId } = req.user
+        const { budgetId } = req.params
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
         const filter = await queryFilter(req)
         const incomes = await Income.find({ budget: budget.id, ...filter }).populate('category')

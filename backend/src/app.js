@@ -1,10 +1,10 @@
+import 'dotenv/config'
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import baseRouter from "./routes/baseRouter";
 
 const app = express()
-const port = 8086
 
 app.use(bodyParser.json())
 app.use(baseRouter)
@@ -18,8 +18,8 @@ app.use((error, req, res, next) => {
 })
 
 mongoose
-  .connect('mongodb://host.docker.internal:27017/familyBudget')
+  .connect(process.env.MONGODB_URI)
   .then(() => {
-    app.listen(port)
+    app.listen(process.env.APP_PORT)
   })
   .catch(e => console.log(e))

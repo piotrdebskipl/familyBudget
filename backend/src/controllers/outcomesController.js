@@ -10,7 +10,8 @@ export const createOutcome = async (req, res, next) => {
         // validateName(req)
         // validateValue(req)
 
-        const { userId, budgetId } = req.params
+        const { userId } = req.user
+        const { budgetId } = req.params
         const { name, value } = req.body
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
         const outcome = await Outcome.create({ name, value, budget: budget.id })
@@ -26,7 +27,8 @@ export const getAllOutcomes = async (req, res, next) => {
         // validateUserId(req)
         // validateUserId(req)
 
-        const { userId, budgetId } = req.params
+        const { userId } = req.user
+        const { budgetId } = req.params
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
         const filter = await queryFilter(req)
         const outcomes = await Outcome.find({ budget: budget.id, ...filter })

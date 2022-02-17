@@ -22,8 +22,6 @@ export const getUserById = async (req, res, next) => {
         const { userId } = req.params
         const user = await User.findById(userId).populate('budgets')
 
-        console.log(user.budgets)
-
         res.status(200).json({ id: user.id, email: user.email })
     } catch (e) {
         return next(e)
