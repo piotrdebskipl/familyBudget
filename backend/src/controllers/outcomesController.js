@@ -1,6 +1,7 @@
 import Budget from "../models/budget"
 import Outcome from "../models/outcome"
 import pagination from "../services/paginationService"
+import queryFilter from "../services/queryFilterService"
 
 export const createOutcome = async (req, res, next) => {
     try {
@@ -27,7 +28,8 @@ export const getAllOutcomes = async (req, res, next) => {
 
         const { userId, budgetId } = req.params
         const budget = await Budget.findOne({ _id: budgetId, createdBy: userId })
-        const outcomes = await Outcome.find({ budget: budget.id })
+        const filter = await queryFilter(req)
+        const outcomes = await Outcome.find({ budget: budget.id, ...filter })
         const paginatedOutcomes = pagination(req, outcomes)
 
         res.status(200).json(paginatedOutcomes)

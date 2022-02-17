@@ -8,8 +8,6 @@ const pagination = (req, items = []) => {
     const start = (page - 1) * limit
     const end = (page * limit) <= items.length ? (page * limit) : items.length
 
-    console.log(end)
-
     const slicedItems = items.slice(start, end)
 
     if (slicedItems < 0) {
