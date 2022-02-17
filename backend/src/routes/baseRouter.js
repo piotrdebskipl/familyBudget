@@ -12,7 +12,7 @@ router.use('/users', usersRouter)
 router.use('/users/:userId/budgets', budgetsRouter)
 router.use('/users/:userId/budgets/:budgetId/incomes', incomesRouter)
 router.use('/users/:userId/budgets/:budgetId/outcomes', outcomesRouter)
-router.use('/users/:userId/budgets/:budgetId/categories', categoriesRouter)
+router.use('/categories', categoriesRouter)
 
 baseRouter.use('/api', router)
 
