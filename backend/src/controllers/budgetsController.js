@@ -1,4 +1,5 @@
 import Budget from "../models/budget"
+import pagination from "../services/paginationService"
 
 export const createBudget = async (req, res, next) => {
     try {
@@ -22,8 +23,10 @@ export const getAllBudgets = async (req, res, next) => {
         const { userId } = req.params
         const userBudgets = await Budget.find({ createdBy: userId })
         const sharedBudgets = await Budget.find({ shared: userId })
+        const budgets = [...userBudgets, ...sharedBudgets]
+        const paginatedBudgets = pagination(req, budgets)
 
-        res.status(200).json([...userBudgets, ...sharedBudgets])
+        res.status(200).json(paginatedBudgets)
     } catch (e) {
         return next(e)
     }

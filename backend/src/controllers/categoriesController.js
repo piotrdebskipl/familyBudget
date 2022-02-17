@@ -1,4 +1,5 @@
 import Category from "../models/category"
+import pagination from "../services/paginationService"
 
 export const createCategory = async (req, res, next) => {
     try {
@@ -16,8 +17,9 @@ export const createCategory = async (req, res, next) => {
 export const getAllCategories = async (req, res, next) => {
     try {
         const categories = await Category.find()
+        const paginatedCategories = pagination(req, categories)
 
-        res.status(200).json(categories)
+        res.status(200).json(paginatedCategories)
     } catch (e) {
         return next(e)
     }
